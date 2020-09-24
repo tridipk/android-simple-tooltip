@@ -72,8 +72,10 @@ public class OverlayView extends View {
         if (invalidated || bitmap == null || bitmap.isRecycled())
             createWindowFrame();
         // The bitmap is checked again because of Android memory cleanup behavior. (See #42)
-        if (bitmap != null && !bitmap.isRecycled())
+        if (bitmap != null && !bitmap.isRecycled()){
             canvas.drawBitmap(bitmap, 0, 0, null);
+            canvas.drawColor(0, PorterDuff.Mode.CLEAR);
+        }
     }
 
     private void createWindowFrame() {
@@ -86,7 +88,6 @@ public class OverlayView extends View {
         bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
         Canvas osCanvas = new Canvas(bitmap);
-        osCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
 
         RectF outerRectangle = new RectF(0, 0, width, height);
 
