@@ -86,6 +86,7 @@ public class OverlayView extends View {
         bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
         Canvas osCanvas = new Canvas(bitmap);
+        osCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
 
         RectF outerRectangle = new RectF(0, 0, width, height);
 
