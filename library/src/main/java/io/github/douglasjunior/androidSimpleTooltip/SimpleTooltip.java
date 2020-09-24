@@ -122,6 +122,7 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
     private int width;
     private int height;
     private boolean mIgnoreOverlay;
+    private int mOverlayAlpha;
 
 
     private SimpleTooltip(Builder builder) {
@@ -155,6 +156,7 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
         mRootView = SimpleTooltipUtils.findFrameLayout(mAnchorView);
         mHighlightShape = builder.highlightShape;
         mIgnoreOverlay = builder.ignoreOverlay;
+        mOverlayAlpha = builder.overlayAlpha;
         this.width = builder.width;
         this.height = builder.height;
         init();
@@ -223,7 +225,7 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
         if (mIgnoreOverlay) {
             return;
         }
-        mOverlay = mTransparentOverlay ? new View(mContext) : new OverlayView(mContext, mAnchorView, mHighlightShape, mOverlayOffset,mOverlayWindowBackgroundColor);
+        mOverlay = mTransparentOverlay ? new View(mContext) : new OverlayView(mContext, mAnchorView, mHighlightShape, mOverlayOffset,mOverlayWindowBackgroundColor, mOverlayAlpha);
         if (mOverlayMatchParent)
             mOverlay.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         else
@@ -575,6 +577,7 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
         private int height = ViewGroup.LayoutParams.WRAP_CONTENT;
         private boolean ignoreOverlay = false;
         private int overlayWindowBackgroundColor=0;
+        private int overlayAlpha = 0;
 
         public Builder(Context context) {
             this.context = context;
@@ -1107,6 +1110,11 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
          */
         public Builder ignoreOverlay(boolean ignoreOverlay) {
             this.ignoreOverlay = ignoreOverlay;
+            return this;
+        }
+
+        public Builder overlayAlpha(int overlayAlpha){
+            this.overlayAlpha = overlayAlpha;
             return this;
         }
     }

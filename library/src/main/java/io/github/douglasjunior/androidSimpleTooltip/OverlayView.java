@@ -56,13 +56,15 @@ public class OverlayView extends View {
     private final int highlightShape;
     private final float mOffset;
     private final int overlayWindowBackground;
+    private int overlayAlpha;
 
-    OverlayView(Context context, View anchorView, int highlightShape, float offset,int overlayWindowBackground) {
+    OverlayView(Context context, View anchorView, int highlightShape, float offset,int overlayWindowBackground, int overlayAlpha) {
         super(context);
         this.mAnchorView = anchorView;
         this.mOffset = offset;
         this.highlightShape = highlightShape;
         this.overlayWindowBackground=overlayWindowBackground;
+        this.overlayAlpha = overlayAlpha;
     }
 
     @Override
@@ -90,7 +92,12 @@ public class OverlayView extends View {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(overlayWindowBackground);
         paint.setAntiAlias(true);
-        paint.setAlpha(getResources().getInteger(mDefaultOverlayAlphaRes));
+        if(overlayAlpha == 0) {
+            paint.setAlpha(getResources().getInteger(mDefaultOverlayAlphaRes));
+        }
+        else{
+            paint.setAlpha(overlayAlpha);
+        }
         osCanvas.drawRect(outerRectangle, paint);
 
         paint.setColor(Color.TRANSPARENT);
