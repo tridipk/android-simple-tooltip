@@ -74,7 +74,7 @@ public class OverlayView extends View {
         // The bitmap is checked again because of Android memory cleanup behavior. (See #42)
         if (bitmap != null && !bitmap.isRecycled()){
             canvas.drawBitmap(bitmap, 0, 0, null);
-            canvas.drawColor(0, PorterDuff.Mode.CLEAR);
+            canvas.drawColor(overlayWindowBackground);
         }
     }
 
