@@ -92,12 +92,12 @@ public class OverlayView extends View {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(overlayWindowBackground);
         paint.setAntiAlias(true);
-//        if(overlayAlpha == 0) {
-//            paint.setAlpha(getResources().getInteger(mDefaultOverlayAlphaRes));
-//        }
-//        else{
-//            paint.setAlpha(overlayAlpha);
-//        }
+        if(overlayAlpha == 0) {
+            paint.setAlpha(getResources().getInteger(mDefaultOverlayAlphaRes));
+        }
+        else{
+            paint.setAlpha(overlayAlpha);
+        }
         osCanvas.drawRect(outerRectangle, paint);
 
         paint.setColor(Color.TRANSPARENT);
