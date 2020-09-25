@@ -57,14 +57,16 @@ public class OverlayView extends View {
     private final float mOffset;
     private final int overlayWindowBackground;
     private int overlayAlpha;
+    private boolean highlightAnchor;
 
-    OverlayView(Context context, View anchorView, int highlightShape, float offset,int overlayWindowBackground, int overlayAlpha) {
+    OverlayView(Context context, View anchorView, int highlightShape, float offset,int overlayWindowBackground, int overlayAlpha, boolean highlightAnchor) {
         super(context);
         this.mAnchorView = anchorView;
         this.mOffset = offset;
         this.highlightShape = highlightShape;
         this.overlayWindowBackground=overlayWindowBackground;
         this.overlayAlpha = overlayAlpha;
+        this.highlightAnchor = highlightAnchor;
     }
 
     @Override
@@ -110,6 +112,10 @@ public class OverlayView extends View {
         float top = anchorRecr.top - overlayRecr.top;
 
         RectF rect = new RectF(left - mOffset, top - mOffset, left + mAnchorView.getMeasuredWidth() + mOffset, top + mAnchorView.getMeasuredHeight() + mOffset);
+
+        if(!highlightAnchor){
+            rect = new RectF(0,0,0,0);
+        }
 
         if (highlightShape == HIGHLIGHT_SHAPE_RECTANGULAR) {
             osCanvas.drawRect(rect, paint);

@@ -123,6 +123,8 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
     private int height;
     private boolean mIgnoreOverlay;
     private int mOverlayAlpha;
+    private EventListener mEventListener;
+    private boolean mHighlightAnchor = true;
 
 
     private SimpleTooltip(Builder builder) {
@@ -157,6 +159,8 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
         mHighlightShape = builder.highlightShape;
         mIgnoreOverlay = builder.ignoreOverlay;
         mOverlayAlpha = builder.overlayAlpha;
+        mEventListener = builder.onEventListener;
+        mHighlightAnchor = builder.highlightAnchor;
         this.width = builder.width;
         this.height = builder.height;
         init();
@@ -189,6 +193,12 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
                 } else if ((event.getAction() == MotionEvent.ACTION_DOWN) && mDismissOnInsideTouch) {
                     dismiss();
                     return true;
+                }
+                else if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    if(mEventListener != null){
+                        mEventListener.onPopupClicked();
+                    }
+                    return false;
                 }
                 return false;
             }
@@ -225,7 +235,7 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
         if (mIgnoreOverlay) {
             return;
         }
-        mOverlay = mTransparentOverlay ? new View(mContext) : new OverlayView(mContext, mAnchorView, mHighlightShape, mOverlayOffset,mOverlayWindowBackgroundColor, mOverlayAlpha);
+        mOverlay = mTransparentOverlay ? new View(mContext) : new OverlayView(mContext, mAnchorView, mHighlightShape, mOverlayOffset,mOverlayWindowBackgroundColor, mOverlayAlpha, mHighlightAnchor);
         if (mOverlayMatchParent)
             mOverlay.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         else
@@ -533,6 +543,10 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
         void onShow(SimpleTooltip tooltip);
     }
 
+    public interface EventListener {
+        void onPopupClicked();
+    }
+
     /**
      * <div class="pt">Classe responsável por facilitar a criação do objeto <tt>SimpleTooltip</tt>.</div>
      * <div class="en">Class responsible for making it easier to build the object <tt>SimpleTooltip</tt>.</div>
@@ -565,6 +579,7 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
         private float animationPadding = -1;
         private OnDismissListener onDismissListener;
         private OnShowListener onShowListener;
+        private EventListener onEventListener;
         private long animationDuration;
         private int backgroundColor;
         private int textColor;
@@ -578,6 +593,7 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
         private boolean ignoreOverlay = false;
         private int overlayWindowBackgroundColor=0;
         private int overlayAlpha = 0;
+        private boolean highlightAnchor = true;
 
         public Builder(Context context) {
             this.context = context;
@@ -1035,6 +1051,11 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
             return this;
         }
 
+        public Builder onEventListener(EventListener onEventListener){
+            this.onEventListener = onEventListener;
+            return this;
+        }
+
         /**
          * <div class="pt">Habilita o foco no conteúdo da tooltip. Padrão é <tt>false</tt>.</div>
          * <div class="en">Enables focus in the tooltip content. Default is <tt>false</tt>.</div>
@@ -1115,6 +1136,11 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
 
         public Builder overlayAlpha(int overlayAlpha){
             this.overlayAlpha = overlayAlpha;
+            return this;
+        }
+
+        public Builder highlightAnchor(boolean highlightAnchor){
+            this.highlightAnchor = highlightAnchor;
             return this;
         }
     }
