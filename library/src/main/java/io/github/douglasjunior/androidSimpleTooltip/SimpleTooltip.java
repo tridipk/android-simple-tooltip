@@ -124,7 +124,8 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
     private boolean mIgnoreOverlay;
     private int mOverlayAlpha;
     private EventListener mEventListener;
-    private boolean mHighlightAnchor = true;
+    private boolean mHighlightAnchor;
+    private int mShowcasePosition;
 
 
     private SimpleTooltip(Builder builder) {
@@ -161,6 +162,7 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
         mOverlayAlpha = builder.overlayAlpha;
         mEventListener = builder.onEventListener;
         mHighlightAnchor = builder.highlightAnchor;
+        mShowcasePosition = builder.showcasePosition;
         this.width = builder.width;
         this.height = builder.height;
         init();
@@ -338,6 +340,10 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
         if (mPopupWindow != null) {
             mPopupWindow.dismiss();
         }
+    }
+
+    public int getShowcasePosition(){
+        return mShowcasePosition;
     }
 
     /**
@@ -594,6 +600,7 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
         private int overlayWindowBackgroundColor=0;
         private int overlayAlpha = 0;
         private boolean highlightAnchor = true;
+        private int showcasePosition = -1;
 
         public Builder(Context context) {
             this.context = context;
@@ -1141,6 +1148,11 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
 
         public Builder highlightAnchor(boolean highlightAnchor){
             this.highlightAnchor = highlightAnchor;
+            return this;
+        }
+
+        public Builder showcasePosition(int showcasePosition){
+            this.showcasePosition = showcasePosition;
             return this;
         }
     }
