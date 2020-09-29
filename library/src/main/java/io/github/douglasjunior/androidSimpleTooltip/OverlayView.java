@@ -51,6 +51,7 @@ public class OverlayView extends View {
 
     private View mAnchorView;
     private Bitmap bitmap;
+    private RectF rectF;
 
     private boolean invalidated = true;
     private final int highlightShape;
@@ -117,6 +118,7 @@ public class OverlayView extends View {
             rect = new RectF(0,0,0,0);
         }
 
+        rectF = rect;
         if (highlightShape == HIGHLIGHT_SHAPE_RECTANGULAR) {
             osCanvas.drawRect(rect, paint);
         } else {
@@ -144,5 +146,9 @@ public class OverlayView extends View {
     public void setAnchorView(View anchorView) {
         this.mAnchorView = anchorView;
         invalidate();
+    }
+
+    public RectF getAnchorRect(){
+        return rectF;
     }
 }

@@ -126,6 +126,7 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
     private EventListener mEventListener;
     private boolean mHighlightAnchor;
     private int mShowcasePosition;
+    private boolean mAnchorClickable;
 
 
     private SimpleTooltip(Builder builder) {
@@ -163,6 +164,7 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
         mEventListener = builder.onEventListener;
         mHighlightAnchor = builder.highlightAnchor;
         mShowcasePosition = builder.showcasePosition;
+        mAnchorClickable = builder.anchorClickable;
         this.width = builder.width;
         this.height = builder.height;
         init();
@@ -398,6 +400,17 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+            if(!mAnchorClickable){
+                return mModal;
+            }
+            final int x = (int) event.getX();
+            final int y = (int) event.getY();
+            if(mOverlay instanceof OverlayView){
+                RectF rectF = ((OverlayView) mOverlay).getAnchorRect();
+                if(rectF != null && rectF.contains(x,y)){
+                    return false;
+                }
+            }
             return mModal;
         }
     };
@@ -601,6 +614,7 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
         private int overlayAlpha = 0;
         private boolean highlightAnchor = true;
         private int showcasePosition = -1;
+        private boolean anchorClickable = false;
 
         public Builder(Context context) {
             this.context = context;
@@ -1153,6 +1167,11 @@ public class SimpleTooltip implements PopupWindow.OnDismissListener {
 
         public Builder showcasePosition(int showcasePosition){
             this.showcasePosition = showcasePosition;
+            return this;
+        }
+
+        public Builder anchorClickable(boolean anchorClickable){
+            this.anchorClickable = anchorClickable;
             return this;
         }
     }
